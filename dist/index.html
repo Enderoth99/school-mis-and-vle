@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#173f3b">
+  <meta name="description" content="WIST teacher workspace prototype for classes, attendance and reporting.">
+  <title>WIST · Teacher workspace</title><link rel="icon" type="image/png" href="assets/wist-icon.png">
+  <link rel="stylesheet" href="style.css"><link rel="stylesheet" href="timetable.css"><script type="module" src="app.mjs"></script>
+<link rel="stylesheet" href="timetable-manager.css"><link rel="stylesheet" href="report-library.css"><link rel="stylesheet" href="classroom.css"></head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <aside id="sidebar" class="sidebar"></aside>
+  <div class="workspace">
+    <header class="topbar"><div class="school"><a class="wist-header-brand" href="#/home" aria-label="WIST home"><img class="wist-logo-header" src="assets/wist-logo.svg" alt="WIST" width="1515" height="309"></a><span class="school-title">Westminster International School Tashkent<span class="subschool">Teacher workspace</span></span></div><div class="top-actions"><form id="global-search" role="search"><label class="sr-only" for="search-everywhere">Find a student</label><input id="search-everywhere" placeholder="Find a student…" autocomplete="off"><button class="search-button" aria-label="Search students">⌕</button></form><span class="account-name"><strong id="teacher-name"></strong><small id="teacher-role"></small></span><span id="teacher-avatar" class="profile"></span><button class="text-button signout" id="sign-out">Sign out</button></div></header>
+    <div class="demo-bar"><span><i></i>PROTOTYPE · SAMPLE DATA</span><span>Attendance, assessments and reports are shared on the local server. Use fictional information.</span><button id="backup" class="text-button">Export backup ↗</button></div>
+    <div id="storage-warning" role="alert" hidden></div>
+    <main id="main" tabindex="-1"></main>
+    <footer>WIST Teacher Workspace <span>Academic year 2026–2027 · Prototype v0.21</span></footer>
+  </div>
+  <dialog id="dialog" aria-labelledby="dialog-title"><div id="dialog-content"></div></dialog>
+  <div id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

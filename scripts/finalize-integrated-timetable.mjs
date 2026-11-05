@@ -1,0 +1,10 @@
+import fs from 'node:fs/promises';
+import {validateTimetable} from '../dist/timetable-engine.mjs';
+const project=JSON.parse(await fs.readFile(new URL('../tmp/integrated-timetable-solved.json',import.meta.url),'utf8'));
+const report=validateTimetable(project);
+if(!report.complete)throw Error('Integration blocked: timetable must have no clashes or missing compulsory pupil periods.');
+project.notes=project.notes.filter(note=>!note.startsWith('Full-school testing adds fictional'));
+project.notes.push('Full-school testing adds fictional teachers Mila Reed (Mathematics), Theo Adams (English), Rowan Hayes (PE/PSHE), and Demo sports spaces 3 and 4. Existing pupil IDs and teaching-set memberships are unchanged.');
+project.integrationResources={teachers:project.teachers.filter(t=>t.integrationFixture).map(t=>({id:t.id,name:t.name,username:t.username})),rooms:['Demo sports space 3','Demo sports space 4']};
+await fs.writeFile(new URL('../dist/timetable-integrated.json',import.meta.url),JSON.stringify(project));
+console.log(JSON.stringify({placed:report.placed,total:report.total,missing:report.coverage.missingSlots,students:report.coverage.students.length}));

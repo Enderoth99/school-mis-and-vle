@@ -1,0 +1,7 @@
+# Teacher drafts — 0.30.0
+
+Teachers have a Drafts link in Classroom navigation. It lists private units, draft quizzes and draft assignments across their allocated teaching classes, with counts, saved-plan indicators, deadlines and unit membership. Class/type/search filters and twelve-item pagination keep long lists manageable. Unit rows link to publication review and material editing; quiz and assignment rows link directly to the appropriate editor. Tasks inside private units also link to the unit plan.
+
+The read-only drafts endpoint explicitly refuses students and parents. Staff only receive allocated-class metadata. It excludes descriptions, question content/keys, attachments, submissions and grades. Administrators see their existing all-class scope. Published units/tasks leave the draft list, while unselected drafts remain available. Reading and filtering do not change publication settings or stored work.
+
+Validation: 306 automated tests and syntax checks pass. New tests cover staff allocation, student/parent denial at store and HTTP layers, metadata-only responses, read-only behaviour, filtering/pagination, saved selections, unit relationships and removal after publication. Browser QA verified the draft navigation, class/type filters and direct resumption of a saved plan with its unchecked task and deadline intact. Existing browser-local records and database identifiers are retained.

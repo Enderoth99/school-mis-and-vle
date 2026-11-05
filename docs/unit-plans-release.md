@@ -1,0 +1,7 @@
+# Saved publication plans — 0.29.0
+
+The unit review has a **Save draft plan** button alongside Publish unit. It saves deadlines for selected draft tasks and remembers the checked task list, including an empty selection. The review refreshes with a fresh snapshot after saving. Returning later restores selections and dates; unselected date inputs remain disabled. The success message explicitly says nothing has been published.
+
+Saving does not publish the unit or any task, generate student updates, alter grades or create submissions. It retains the same staff allocation, task membership, date validation and transactional snapshot protections as publication. Changed dates increment task revisions; saving identical dates leaves those task revisions unchanged. The unit revision and a scoped save-unit-plan audit record track the saved selection. Actual publication discards the temporary plan and uses the reviewed selection. Older publication requests without a mode keep their existing behaviour.
+
+Validation: 302 automated tests and syntax checks pass. Browser QA saved a deadline, saved an unchecked selection, reloaded the page and confirmed the date remained 27 November with the task still unchecked and the unit still a private draft. Existing demo records and the integrated browser-local database namespace are retained. Plans are saved in the current browser and do not sync across devices.

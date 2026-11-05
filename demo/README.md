@@ -1,0 +1,15 @@
+# Free browser demo
+
+Published at https://enderoth-learning-hub.web.app/wist-mis/ and linked from the Learning Hub root card and sidebar. The full Node application remains separate. The public demo reuses the attendance, grade, Directory, messaging and report workflow handlers, bundled for the browser with IndexedDB file storage. It is not an authentication or data privacy boundary; all data and credentials are fictional fixtures.
+
+Each browser has independent data. Reloading retains demo changes. Web Locks serialize changes across tabs where supported. Each tab chooses its own fictional teacher via sessionStorage, while records are common to that browser. There is no external API service, no actual message delivery and no server PDF rendering. PDF download controls are hidden and unsupported PDF endpoint calls return an explicit demo message. The existing local application and saved local-server data are unchanged.
+
+Build tools were installed with npm in tmp/browser-demo-tools: esbuild, buffer and @noble/hashes@1.8.0. Run node demo/build.mjs EMPTY_OUTPUT_DIRECTORY; the build intentionally refuses to overwrite a populated output folder. The seed uses only the five fictional deploy/seed JSON files; no reference documents, screenshots, credentials or server files are published. Source shims are in demo/browser-*.mjs and the generated bundle is demo-api.mjs. bootstrap.mjs starts browser storage before loading the app and routes only this demo's API calls to local handlers. Initial seeds download only when needed.
+
+The landing host uses the existing Firebase site enderoth-learning-hub in economics-monopoly. Preserve that target and the hosting security headers. Its catalog card and translations were backed up before editing; all 161 prior links were retained. Both the card and sidebar point to /wist-mis/. Language coverage and KS5009 checks passed. Browser QA verified sign-in, all Attendance tabs, saved attendance, student Directory links and 17-subject grade tracking. The existing backend suite (86 tests) also passed before packaging.
+
+The timetabling preview now seeds rules v2 with a bounded partial draft. Full compulsory student coverage is checked separately from card placement. Existing planning drafts remain untouched until Apply school rules backs them up and upgrades them. The older solved 30-period seed does not satisfy the current rules.
+
+The timetable first-visit seed is the prepared secondary Model 1 snapshot from dist/timetable-demo.json, generated with npm run demo:timetable. Existing drafts are not replaced. Load scheduled demo backs up the current local planning draft. This seed is explicitly incomplete, with hard-clash validation enforced by the builder.
+
+The timetable root now opens the manager setup journey; an explicit #/timetable?tab=board still opens the board. Manager staff/options/load changes and review checkpoints remain browser-local and are included in JSON backups. The scheduled seed does not mark these input stages reviewed automatically.

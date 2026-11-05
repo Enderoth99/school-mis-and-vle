@@ -1,0 +1,12 @@
+const minutes=t=>{if(!/^\d{2}:\d{2}$/.test(t||''))return null;const [h,m]=t.split(':').map(Number);return h<24&&m<60?h*60+m:null;};
+export const validCoverTime=r=>minutes(r.from)!==null&&minutes(r.to)!==null&&minutes(r.from)<minutes(r.to);
+export const coverOverlap=(a,b)=>!validCoverTime(a)||!validCoverTime(b)||minutes(a.from)<minutes(b.to)&&minutes(b.from)<minutes(a.to);
+export function evaluateCover(data,assignments={}){
+ const absent=new Set(data.absentIds),staff=new Map(data.staff.map(t=>[t.id,t])),lessons=new Map(data.lessons.map(l=>[l.key,l]));
+ const rows=data.lessons.map(lesson=>{const candidates=data.staff.filter(t=>t.eligible&&!absent.has(t.id)&&!(data.schedules[t.id]||[]).some(r=>coverOverlap(lesson,r))&&!(data.unavailable?.[t.id]||[]).some(r=>coverOverlap(lesson,r))&&!Object.entries(assignments).some(([key,id])=>key!==lesson.key&&id===t.id&&lessons.has(key)&&coverOverlap(lesson,lessons.get(key))));const selectedId=assignments[lesson.key]||'',selected=staff.get(selectedId),valid=!selectedId||candidates.some(t=>t.id===selectedId);return{...lesson,candidates,coverId:selectedId,coverName:selected?.name||'',valid,problem:selectedId&&!valid?'This teacher is absent, unavailable or assigned overlapping cover.':''};});
+ return{rows,assigned:rows.filter(r=>r.coverId&&r.valid).length,complete:rows.length>0&&rows.every(r=>r.coverId&&r.valid),conflicts:rows.filter(r=>!r.valid).length};
+}
+export function coverSignature(data){let h=2166136261;for(const c of JSON.stringify([data.date,data.absentIds,data.staff,data.schedules,data.unavailable||{},data.lessons]))h=Math.imul(h^c.charCodeAt(0),16777619)>>>0;return h.toString(36);}
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const plain=v=>String(v??'').replace(/[\t\r\n]+/g,' ');
+export function coverEmail(data,rows){const title='Cover arrangements · '+data.date,headers=['Absent teacher','Period','Time','Class','Room','Cover teacher'],cells=rows.map(r=>[r.absentName,r.period,r.from+'–'+r.to,r.className,r.room,r.coverName]);return{text:title+'\r\n'+[headers,...cells].map(r=>r.map(plain).join('\t')).join('\r\n'),html:'<h2>'+esc(title)+'</h2><table border="1" cellpadding="6" cellspacing="0"><thead><tr>'+headers.map(h=>'<th>'+esc(h)+'</th>').join('')+'</tr></thead><tbody>'+cells.map(r=>'<tr>'+r.map(c=>'<td>'+esc(c)+'</td>').join('')+'</tr>').join('')+'</tbody></table>'};}

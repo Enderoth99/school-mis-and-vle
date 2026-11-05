@@ -1,0 +1,17 @@
+import {mkdir,writeFile} from 'node:fs/promises';
+import {students,groups,yearGroups,DATASET_VERSION} from '../dist/school-data.mjs';
+import {csv} from '../dist/model.mjs';
+import {teachers,teachingClasses,classesForTeacher,studentsForTeacher,formTutors,teacherById,TEACHING_VERSION} from '../dist/teaching-data.mjs';
+import {TEST_PASSWORD} from '../server-auth.mjs';
+if(students.length!==1000||groups.length!==51)throw new Error('Population totals are incorrect.');
+const out=new URL('../dist/data/',import.meta.url);
+await mkdir(out,{recursive:true});
+await writeFile(new URL('students.json',out),JSON.stringify({datasetVersion:DATASET_VERSION,synthetic:true,academicYear:'2026-2027',studentCount:students.length,groupCount:groups.length,groups,students},null,2));
+await writeFile(new URL('students.csv',out),csv([['Student ID','Admission number','First name','Last name','Year group','Form','Group','Date of birth','Test email','Status','Synthetic'],...students.map(s=>[s.studentNumber,s.admissionNumber,s.firstName,s.lastName,s.yearLabel,s.form,s.groupName,s.dateOfBirth,s.schoolEmail,s.status,'TRUE'])]));
+await writeFile(new URL('form-sizes.csv',out),csv([['Year group','Form','Students'],...groups.map(g=>[g.yearLabel,g.form,g.count])]));
+await writeFile(new URL('population-summary.json',out),JSON.stringify({studentCount:students.length,groupCount:groups.length,yearGroups:yearGroups.map(y=>({...y,forms:groups.filter(g=>g.year===y.year).map(g=>({form:g.form,students:g.count}))}))},null,2));
+await writeFile(new URL('teacher-accounts.csv',out),csv([['Teacher','Username','Shared test password','Phase','Curriculum area','Form tutor groups','Subjects in curriculum area','Teaching groups','Unique allocated students'],...teachers.map(t=>[t.name,t.username,TEST_PASSWORD,t.phase,t.area,t.formIds.map(id=>groups.find(g=>g.id===id).name).join('; '),t.subjects.join('; '),classesForTeacher(t.id).length,studentsForTeacher(t.id).length])]));
+await writeFile(new URL('teaching-groups.csv',out),csv([['Teaching group ID','Teaching group','Subject','Year group','Form or set','Membership type','Option block','Teacher','Username','Students'],...teachingClasses.map(c=>[c.id,c.name,c.subject,typeof c.year==='number'?`Year ${String(c.year).padStart(2,'0')}`:c.year,c.cohort,c.enrollmentMode,c.block||'',teacherById(c.teacherId).name,teacherById(c.teacherId).username,c.studentIds.length])]));
+await writeFile(new URL('student-group-memberships.csv',out),csv([['Student ID','Admission number','Student','Form group','Teaching group ID','Teaching group','Subject','Teacher','Username'],...teachingClasses.flatMap(c=>c.studentIds.map(id=>{const s=students.find(s=>s.id===id),t=teacherById(c.teacherId);return[s.studentNumber,s.admissionNumber,s.name,s.groupName,c.id,c.name,c.subject,t.name,t.username];}))]));
+await writeFile(new URL('teaching-allocation.json',out),JSON.stringify({teachingVersion:TEACHING_VERSION,synthetic:true,teachers,formTutors,teachingGroups:teachingClasses},null,2));
+console.log(JSON.stringify({students:students.length,forms:groups.length,teachers:teachers.length,primaryTeachers:teachers.filter(t=>t.phase!=='Secondary').length,secondaryTeachers:teachers.filter(t=>t.phase==='Secondary').length,teachingGroups:teachingClasses.length,memberships:teachingClasses.reduce((n,c)=>n+c.studentIds.length,0)}));

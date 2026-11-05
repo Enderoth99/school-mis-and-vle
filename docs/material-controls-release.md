@@ -1,0 +1,7 @@
+# Manage class materials — 0.36.0
+
+Allocated teachers can edit a material's title, topic, description and HTTPS link. Leaving uploads blank preserves existing attachments; new uploads replace them, and an explicit remove-attachments checkbox clears them when no replacement is supplied. Empty resources, unsafe URLs and unsupported/oversized files are rejected. Legacy resources without revision fields start at revision 1.
+
+Archive is reversible: it retains the document in a teacher-only archive and excludes it, its file bytes and its update from student room responses. Restore makes the same resource and attachments available again. Teachers can filter available/archived lists and open an archived resource to restore it. Student update versions change after edits/restoration, making revised material unread again. Revision checks prevent stale edits, archive or restore actions; scoped audit records are included in staff backups. The edit and restore views refresh immediately after saving.
+
+Validation: 328 automated tests and syntax checks pass. New checks cover attachment retention/replacement/removal, stale edits, archive visibility, restored document bytes and unread updates, allocation, legacy revisions and audit scope. Browser QA edited a description/title without reuploading, archived the guide, opened its archived card and restored it. The file remained available and controls/counts refreshed correctly. Existing browser-local records are retained.

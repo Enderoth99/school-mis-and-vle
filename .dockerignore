@@ -1,0 +1,11 @@
+**
+!Dockerfile
+!package.json
+!*.mjs
+!dist/
+!dist/**
+!scripts/
+!scripts/render-report.py
+!deploy/
+!deploy/seed/
+!deploy/seed/*.json

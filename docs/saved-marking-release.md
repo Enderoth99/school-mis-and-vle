@@ -1,0 +1,7 @@
+# Find saved marking — 0.34.0
+
+Teachers can open Saved marking drafts from the marking inbox, Today or the Drafts page. The list includes private drafts for already returned work and scores already transferred to MIS, so these notes remain discoverable even when the ordinary marking/transfer queue is clear. Existing class/search filters and twelve-row pagination apply. Resume marking opens the named student's review with the saved content loaded.
+
+The list contains only task/student/class metadata and draft validity flags; draft scores and comments are not included. It is scoped to the signed-in staff member and current class allocation/enrolment. Student dashboard responses return an empty saved-marking list. Withdrawn work and revisions that no longer match the saved draft are flagged for review. Returning feedback removes that teacher's saved draft from the list. Listing and filtering do not change records.
+
+Validation: 319 automated tests and syntax checks pass. New tests cover discovery after MIS transfer, owner-only metadata, student/parent denial, withdrawal/resubmission flags, read-only listing, removal after return and filters for previously returned draft work. Browser QA found the two existing local marking drafts, filtered by class and CPU task, and resumed the correct review with its private draft still loaded. Existing browser-local database identifiers and records are retained.

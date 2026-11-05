@@ -1,0 +1,7 @@
+# Direct class materials — 0.35.0
+
+The former Apps & resources tab is now Materials. Allocated teachers can share a titled document, description/reading note or optional HTTPS link under a topic without creating an assignment. Files use the existing allowed formats and limits: up to three PDF/TXT/CSV/image/Office files, one MB each. Existing provider links are retained. The add form is collapsed initially; student views have no publishing controls.
+
+Topic and title/description/filename search keep resources easy to find. Lists show six resources per page; a focused material page has its description and document downloads. After sharing, teachers land on that focused page. Enrolled students receive a class-material update that links to the exact resource. Files are downloaded as attachment blobs rather than rendered as executable content. No external account connections, assignments or grade records are created.
+
+Validation: 324 automated tests and syntax checks pass. New tests cover standalone document publication, unchanged assignment/grade stores, reading-only material, retained HTTPS links, format/size limits, class allocation/enrolment, student update scope and the HTTP upload/read flow. Browser QA uploaded a fictional CPU text guide, followed the student update, downloaded it and confirmed its contents matched the upload exactly. Topic plus filename search found the resource. The existing integrated browser-local database namespace is preserved; colleagues' browsers remain separate.

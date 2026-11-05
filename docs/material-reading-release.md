@@ -1,0 +1,7 @@
+# Reading confirmations — 0.38.0
+
+Students can choose I've read this on a class material, see their own confirmation date and undo it with Mark as not read. Confirmations are tied to the resource revision; edits or restoration require confirmation of the current version. Copies start without confirmations. Viewing or downloading alone does not create a confirmation, assignment completion, mark or attendance record.
+
+Allocated teachers have a collapsed Reading confirmations report with confirmed/roster counts and filters for pending, confirmed and updated-since-confirmation students. It lists current enrolment and the last confirmation time. Students receive only their own reading state in room responses and cannot access the teacher report or change another student's record. Stale revisions, archived resources, wrong roles and foreign classes are rejected. Staff backups retain reading history within their class scope.
+
+Validation: 337 automated tests and syntax checks pass. New tests cover version binding, student-only updates, teacher-only reporting, peer privacy, retry timestamp stability, undo, edits, archives/restoration, copies, backup scope and HTTP behaviour. Browser QA confirmed a Year 8 material, reloaded to verify persistence, checked the teacher's 1/18 report, then edited the material and verified the report changed to 0/18 with that student marked Updated · read again. Existing integrated browser-local data and identifiers are retained.

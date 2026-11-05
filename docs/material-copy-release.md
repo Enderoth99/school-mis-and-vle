@@ -1,0 +1,7 @@
+# Reuse class materials — 0.37.0
+
+An allocated teacher can open Copy to another class on a material, choose another allocated classroom and set the copied title. The form explicitly states that the destination students receive it immediately. The independent copy includes the description, topic, attachment bytes and optional HTTPS link. It receives a new ID, revision, creation timestamp and author; editing one copy does not change the original. No assignments, grades or student work are copied.
+
+Both class allocations are rechecked inside the transaction. Archived sources must be restored first. Source revision checks reject outdated previews. A per-account operation ID makes identical concurrent/retried requests return the same copy, while changed choices cannot reuse that operation. Copies produce the existing class-material student update and a scoped copy-material audit record.
+
+Validation: 331 automated tests and syntax checks pass. New tests cover independent attachments, destination enrolment/update scope, no grade/assignment mutation, concurrent retries, changed request reuse, class allocation, source revisions and archive restrictions. Browser QA copied the existing Year 9 guide into Year 8A with a new title, then signed in as an enrolled Year 8 student and confirmed the description and document download were available. Existing browser-local data and namespace are retained.

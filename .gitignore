@@ -1,0 +1,14 @@
+.data/
+tmp/
+__pycache__/
+deploy/seed/
+node_modules/
+build/
+output/
+qa/
+.env
+.env.*
+*.pem
+*.key
+firebase-debug.log
+*.log

@@ -1,0 +1,345 @@
+{
+  "studentCount": 1000,
+  "groupCount": 51,
+  "yearGroups": [
+    {
+      "year": "FS1",
+      "value": "FS1",
+      "label": "FS1",
+      "total": 66,
+      "groupCount": 4,
+      "forms": [
+        {
+          "form": "A",
+          "students": 15
+        },
+        {
+          "form": "B",
+          "students": 17
+        },
+        {
+          "form": "C",
+          "students": 16
+        },
+        {
+          "form": "D",
+          "students": 18
+        }
+      ]
+    },
+    {
+      "year": "FS2",
+      "value": "FS2",
+      "label": "FS2",
+      "total": 70,
+      "groupCount": 4,
+      "forms": [
+        {
+          "form": "A",
+          "students": 16
+        },
+        {
+          "form": "B",
+          "students": 18
+        },
+        {
+          "form": "C",
+          "students": 17
+        },
+        {
+          "form": "D",
+          "students": 19
+        }
+      ]
+    },
+    {
+      "year": 1,
+      "value": "1",
+      "label": "Year 01",
+      "total": 94,
+      "groupCount": 4,
+      "forms": [
+        {
+          "form": "A",
+          "students": 23
+        },
+        {
+          "form": "B",
+          "students": 25
+        },
+        {
+          "form": "C",
+          "students": 24
+        },
+        {
+          "form": "D",
+          "students": 22
+        }
+      ]
+    },
+    {
+      "year": 2,
+      "value": "2",
+      "label": "Year 02",
+      "total": 94,
+      "groupCount": 4,
+      "forms": [
+        {
+          "form": "A",
+          "students": 24
+        },
+        {
+          "form": "B",
+          "students": 22
+        },
+        {
+          "form": "C",
+          "students": 25
+        },
+        {
+          "form": "D",
+          "students": 23
+        }
+      ]
+    },
+    {
+      "year": 3,
+      "value": "3",
+      "label": "Year 03",
+      "total": 90,
+      "groupCount": 4,
+      "forms": [
+        {
+          "form": "A",
+          "students": 21
+        },
+        {
+          "form": "B",
+          "students": 24
+        },
+        {
+          "form": "C",
+          "students": 22
+        },
+        {
+          "form": "D",
+          "students": 23
+        }
+      ]
+    },
+    {
+      "year": 4,
+      "value": "4",
+      "label": "Year 04",
+      "total": 90,
+      "groupCount": 4,
+      "forms": [
+        {
+          "form": "A",
+          "students": 23
+        },
+        {
+          "form": "B",
+          "students": 21
+        },
+        {
+          "form": "C",
+          "students": 24
+        },
+        {
+          "form": "D",
+          "students": 22
+        }
+      ]
+    },
+    {
+      "year": 5,
+      "value": "5",
+      "label": "Year 05",
+      "total": 86,
+      "groupCount": 4,
+      "forms": [
+        {
+          "form": "A",
+          "students": 22
+        },
+        {
+          "form": "B",
+          "students": 20
+        },
+        {
+          "form": "C",
+          "students": 23
+        },
+        {
+          "form": "D",
+          "students": 21
+        }
+      ]
+    },
+    {
+      "year": 6,
+      "value": "6",
+      "label": "Year 06",
+      "total": 86,
+      "groupCount": 4,
+      "forms": [
+        {
+          "form": "A",
+          "students": 21
+        },
+        {
+          "form": "B",
+          "students": 23
+        },
+        {
+          "form": "C",
+          "students": 20
+        },
+        {
+          "form": "D",
+          "students": 22
+        }
+      ]
+    },
+    {
+      "year": 7,
+      "value": "7",
+      "label": "Year 07",
+      "total": 82,
+      "groupCount": 4,
+      "forms": [
+        {
+          "form": "A",
+          "students": 19
+        },
+        {
+          "form": "B",
+          "students": 21
+        },
+        {
+          "form": "C",
+          "students": 20
+        },
+        {
+          "form": "D",
+          "students": 22
+        }
+      ]
+    },
+    {
+      "year": 8,
+      "value": "8",
+      "label": "Year 08",
+      "total": 78,
+      "groupCount": 4,
+      "forms": [
+        {
+          "form": "A",
+          "students": 18
+        },
+        {
+          "form": "B",
+          "students": 20
+        },
+        {
+          "form": "C",
+          "students": 19
+        },
+        {
+          "form": "D",
+          "students": 21
+        }
+      ]
+    },
+    {
+      "year": 9,
+      "value": "9",
+      "label": "Year 09",
+      "total": 58,
+      "groupCount": 4,
+      "forms": [
+        {
+          "form": "A",
+          "students": 14
+        },
+        {
+          "form": "B",
+          "students": 15
+        },
+        {
+          "form": "C",
+          "students": 14
+        },
+        {
+          "form": "D",
+          "students": 15
+        }
+      ]
+    },
+    {
+      "year": 10,
+      "value": "10",
+      "label": "Year 10",
+      "total": 54,
+      "groupCount": 3,
+      "forms": [
+        {
+          "form": "A",
+          "students": 18
+        },
+        {
+          "form": "B",
+          "students": 19
+        },
+        {
+          "form": "C",
+          "students": 17
+        }
+      ]
+    },
+    {
+      "year": 11,
+      "value": "11",
+      "label": "Year 11",
+      "total": 32,
+      "groupCount": 2,
+      "forms": [
+        {
+          "form": "A",
+          "students": 17
+        },
+        {
+          "form": "B",
+          "students": 15
+        }
+      ]
+    },
+    {
+      "year": 12,
+      "value": "12",
+      "label": "Year 12",
+      "total": 10,
+      "groupCount": 1,
+      "forms": [
+        {
+          "form": "A",
+          "students": 10
+        }
+      ]
+    },
+    {
+      "year": 13,
+      "value": "13",
+      "label": "Year 13",
+      "total": 10,
+      "groupCount": 1,
+      "forms": [
+        {
+          "form": "A",
+          "students": 10
+        }
+      ]
+    }
+  ]
+}

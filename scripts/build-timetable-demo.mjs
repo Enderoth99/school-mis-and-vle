@@ -1,0 +1,11 @@
+import fs from 'node:fs/promises';
+import {createDemonstrationProject} from '../dist/timetable-school-rules.mjs';
+import {generateTimetable} from '../dist/timetable-engine.mjs';
+const generated=generateTimetable(createDemonstrationProject({scope:'secondary'}),{maxAttempts:8,maxNodes:100000});
+const {report,project}=generated;
+if(report.issues.some(i=>!i.diagnostic))throw Error('Refusing to publish a scheduled demo with hard clashes.');
+project.generationSummary={placed:report.placed,total:report.total,missingStudentPeriods:report.coverage.missingSlots,complete:report.complete};
+project.notes.push('This scheduled demonstration is a partial draft. Missing compulsory lessons remain visible and must be resolved before this can be used as a complete timetable.');
+await fs.writeFile(new URL('../dist/timetable-demo.json',import.meta.url),JSON.stringify(project));
+await fs.writeFile(new URL('../output/timetable-demo-checks.json',import.meta.url),JSON.stringify(report,null,2));
+console.log(JSON.stringify({placed:report.placed,total:report.total,missing:report.coverage.missingSlots,complete:report.complete,years:[7,8,9,10,11,12,13].map(year=>{const rows=report.coverage.students.filter(s=>s.year===year);return{year,students:rows.length,full:rows.filter(s=>s.covered===40).length,minimum:Math.min(...rows.map(s=>s.covered)),maximum:Math.max(...rows.map(s=>s.covered))};})}));

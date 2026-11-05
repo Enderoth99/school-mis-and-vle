@@ -1,0 +1,4 @@
+export const progressLabels={locked:'Locked',overdue:'Overdue work',submitted:'Handed in',complete:'Complete',working:'In progress',scheduled:'Opens later',ready:'Ready to read / start'};
+export function progressLabel(c){return (c.status==='complete'&&c.revising?'Complete · revising':progressLabels[c.status]||c.status)+(c.total?' · '+c.done+'/'+c.total:'')+(c.pending?' · '+c.pending+' to mark':'');}
+const cell=value=>{let text=String(value??'');if(/^[\s]*[=+\-@]/.test(text)||/^[\t\r\n]/.test(text))text="'"+text;return '"'+text.replaceAll('"','""')+'"';};
+export function courseProgressCSV(data){return '\ufeff'+[['Student ID','Student',...data.units.map(u=>u.title)],...data.rows.map(r=>[r.studentNumber,r.name,...data.units.map(u=>progressLabel(r.cells.find(c=>c.id===u.id)))])].map(row=>row.map(cell).join(',')).join('\r\n')+'\r\n';}
