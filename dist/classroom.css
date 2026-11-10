@@ -69,3 +69,19 @@
 .support-toolbar{display:flex;align-items:end;gap:12px;flex-wrap:wrap;margin:12px 0}.support-toolbar label{display:grid;gap:4px}.support-board{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.support-column{background:#edf3ef;border:1px solid #d4dfd7;border-radius:14px;padding:14px;min-width:0}.support-column h2{font-size:20px;margin:0}.support-column>p{font-size:12px;color:#526866;margin:5px 0 12px}.support-cards{max-height:58vh;overflow:auto;display:grid;gap:10px;align-content:start}.support-card{display:block;text-align:left;width:100%;border:1px solid #d0dcd5;background:white;border-radius:10px;padding:15px;color:#163e3a;cursor:pointer;box-shadow:0 2px 4px #183d3610}.support-card:hover,.support-card:focus-visible{border-color:#18665b;box-shadow:0 3px 12px #183d3620}.support-card h3{font-size:17px;margin:9px 0}.support-card p{font-size:13px;margin:6px 0}.support-card footer{border-top:1px solid #e7ece8;padding-top:9px;margin-top:12px;display:flex;justify-content:space-between;gap:8px;font-size:11px}.support-priority{float:right}.support-scroll{max-height:62vh;overflow:auto}.support-calendar{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.support-total{font-size:40px}.support-dialog{width:min(900px,94vw);max-height:90vh;overflow:auto;border:0;border-radius:18px;padding:25px;color:#163e3a}.support-dialog::backdrop{background:#183d3680}.support-form fieldset{border:0;padding:0;margin:0}.support-dialog .form-grid{gap:12px}.support-comments{margin-top:20px;border-top:1px solid #ddd;padding-top:14px}.support-comments p{white-space:pre-wrap}.support-dialog [data-support-checks]{display:flex;gap:15px;flex-wrap:wrap;margin:12px 0}@media(max-width:850px){.support-board,.support-calendar{grid-template-columns:1fr}.support-cards{max-height:40vh}}
 
 .option-form-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:15px 0}.option-form-grid select{width:100%;font-size:13px}.option-declaration{display:flex;gap:8px;align-items:center;font-size:13px;margin:12px 0}@media(max-width:1000px){.option-form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:650px){.option-form-grid{grid-template-columns:1fr}}
+
+.incident-dialog {width:min(1000px,95vw);max-height:92vh;overflow:auto;border:0;border-radius:16px;padding:24px;color:#173f3b}
+.incident-dialog::backdrop {background:#183d3680}
+.incident-dialog .learning-section-title h2 {font-size:27px}
+.incident-picker {display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:14px 0}
+.incident-picker select {width:100%;font-size:13px}
+.incident-dialog .form-grid {gap:12px}
+.incident-description {white-space:pre-wrap}
+.incident-involved {margin:15px 0;padding:12px;background:#f2f5ef;border-radius:10px}
+.incident-involved-tags {display:flex;gap:8px;flex-wrap:wrap}
+.incident-involved-tags>span {padding:5px 10px;background:#edf3e9;border-radius:18px}
+.incident-role-scroll {max-height:42vh;overflow:auto;display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+.incident-home-scroll {max-height:240px;overflow:auto}
+#incident-home {margin-bottom:16px}
+@media(max-width:800px){.incident-picker {grid-template-columns:1fr 1fr}}
+@media(max-width:500px){.incident-picker,.incident-role-scroll {grid-template-columns:1fr}}

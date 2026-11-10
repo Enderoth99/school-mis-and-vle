@@ -33,6 +33,10 @@ npm run check
 npm test
 ```
 
+## Incidents and rewards
+
+Staff choose Primary/Secondary, year, tutor group and student, then C1–C3 or R1–R3, incident details and any involved students. Each submission saves an Excel-compatible CSV spreadsheet representation alongside the durable ledger. Download spreadsheet exports the records visible to the signed-in staff member. Existing tutors receive relevant entries on Overview. Admins configure Heads of Year and tutor overrides under Incidents → Tutors & Heads of Year. Historical local incidents migrate on staff sign-in.
+
 ## Explore the workflows
 
 - [Year 10 options, staffing rules and Year 11 continuation](docs/year10-model3-release.md)
