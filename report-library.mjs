@@ -1,3 +1,4 @@
+import {dailyAttendance} from './dist/attendance-tracking.mjs';
 import {students,studentById,isDate,today,shiftDate} from './dist/model.mjs';
 import {teachingClasses,teachers,classesForTeacher,studentsForTeacher,teacherById,timetableForTeacher} from './dist/teaching-data.mjs';
 import {REPORT_REVIEWER} from './dist/report-config.mjs';
@@ -75,10 +76,12 @@ export function buildLibraryReport(actor,query,data){
   return output(['Teacher','Day','Period','From','To','Teaching class','Room','Students'],staff.flatMap(t=>Object.entries(dayNames).flatMap(([day,label])=>timetableForTeacher(t.id,day).filter(l=>classIds.has(l.classId)).map(l=>[t.name,label,l.period,l.from||'',l.to||'',className(l.classId),l.room||classMap.get(l.classId).room,classMap.get(l.classId).studentIds.length]))));
  }
  if(['emergency','school-absence-late','school-absent'].includes(def.kind)){
-  const registration=registerList.filter(r=>r.period==='R'&&r.date>=from&&r.date<=to);
-  if(def.kind==='school-absence-late')return output(['Student ID','Student','Year','Date','Code','Arrival time'],registration.flatMap(r=>r.records.filter(row=>pupilIds.has(row.studentId)&&/^(Absent|Late)/.test(row.status)).map(row=>[person(row.studentId).studentNumber,person(row.studentId).name,person(row.studentId).yearLabel,r.date,row.status,row.time||''])));
-  const status=s=>registration.find(r=>r.date===date&&r.records.some(row=>row.studentId===s.id))?.records.find(row=>row.studentId===s.id);
-  return output(['Student ID','Student','Year','Class / form','Date','Registration status','Arrival time'],pupils.filter(s=>def.kind==='emergency'||status(s)?.status.startsWith('Absent')).map(s=>[s.studentNumber,s.name,s.yearLabel,s.groupName,date,status(s)?.status||'No record',status(s)?.time||'']));
+  const days=new Map();
+  for(const r of registerList.filter(r=>r.date>=from&&r.date<=to))for(const row of r.records){if(!pupilIds.has(row.studentId))continue;const key=r.date+'|'+row.studentId;const item=days.get(key)||{date:r.date,studentId:row.studentId,entries:[]};item.entries.push({...row,period:r.period,updatedAt:r.updatedAt});days.set(key,item);}
+  const daily=[...days.values()].map(r=>({...r,...dailyAttendance(r.entries)}));
+  if(def.kind==='school-absence-late')return output(['Student ID','Student','Year','Date','Code','Arrival time'],daily.filter(row=>/^(Absent|Late)/.test(row.status)).map(row=>[person(row.studentId).studentNumber,person(row.studentId).name,person(row.studentId).yearLabel,row.date,row.status,row.time]));
+  const status=s=>daily.find(r=>r.date===date&&r.studentId===s.id);
+  return output(['Student ID','Student','Year','Class / form','Date','School attendance','Arrival time'],pupils.filter(s=>def.kind==='emergency'||status(s)?.status.startsWith('Absent')).map(s=>[s.studentNumber,s.name,s.yearLabel,s.groupName,date,status(s)?.status||'No record',status(s)?.time||'']));
  }
  if(def.kind==='users'){const accounts=admin?[...teachers,REPORT_REVIEWER]:[actor];return output(['Name','Username','Role / area','Last recorded login'],accounts.map(t=>[t.name,t.username,t.area,data.lastLoginFor?.(t.id)||'']));}
  if(['roster','roster-teacher','roster-teacher-alternate','roster-info'].includes(def.kind))return output(['Student ID','Student','Year','Class / form','Teaching class','Subject','Teacher',...(def.kind==='roster-info'?['Birthday','Student email','Parent / emergency contacts']:[])],classes.flatMap(c=>pupils.filter(s=>c.studentIds.includes(s.id)).map(s=>[s.studentNumber,s.name,s.yearLabel,s.groupName,c.name,c.subject,teacherName(c.teacherId),...(def.kind==='roster-info'?[s.dateOfBirth,s.schoolEmail,contacts(s.id).map(p=>p.name+' · '+p.phone+' · '+p.email).join('; ')]:[])])));

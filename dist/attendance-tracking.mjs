@@ -41,3 +41,13 @@ export function attendanceReport(registers,{classId,from,to,scope='class'}){
  const members=new Set(roster(classId).map(s=>s.id));
  return Object.values(registers).filter(r=>r.date>=from&&r.date<=to&&(scope==='students'||r.classId===classId)).flatMap(register=>register.records.filter(r=>members.has(r.studentId)).map(record=>({...record,date:register.date,period:register.period,classId:register.classId,teacherId:register.teacherId,revision:register.revision,complete:register.complete}))).sort((a,b)=>a.date.localeCompare(b.date)||a.studentNumber-b.studentNumber||periodIndex(a.period)-periodIndex(b.period)||a.classId.localeCompare(b.classId));
 }
+
+// Daily presence is established by any saved on-site mark; lesson history stays intact.
+export function dailyAttendance(entries){
+ const ordered=[...entries].sort((a,b)=>periodIndex(a.period)-periodIndex(b.period)||String(a.updatedAt||'').localeCompare(String(b.updatedAt||'')));
+ const registration=ordered.filter(e=>e.period==='R').at(-1);
+ const attended=e=>/^(Present$|Late|Left Early|Internal Inclusion$)/.test(e.status);
+ const arrival=ordered.find(e=>e.period!=='R'&&attended(e));
+ const source=registration&&attended(registration)?registration:arrival||registration||ordered.find(e=>e.status!=='Not Taken');
+ return{status:source?.status||'Not Taken',time:source?.time||source?.arrival||'',registrationStatus:registration?.status||'Not Taken',arrivalPeriod:source?.period||'',corrected:Boolean(arrival&&(!registration||!attended(registration)))};
+}

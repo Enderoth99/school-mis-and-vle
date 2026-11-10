@@ -2,6 +2,8 @@
 
 A school management information system and virtual learning environment with fictional data for testing. The integrated demo includes attendance, gradebooks, reporting, a directory, behaviour incidents, messaging, cover, technical support, timetabling and Classroom. The timetable fixtures contain 1,000 students in 51 form groups and 80 teachers.
 
+Daily absence totals clear when any saved lesson confirms attendance, including a late arrival. Registration and individual lesson absences remain in the audit history. The attendance overview refreshes every 30 seconds; absence reports and family summaries use the same daily rule.
+
 Try the [hosted demo](https://enderoth-learning-hub.web.app/wist-mis-testing/login.html).
 
 | Role | Username | Demo password |
