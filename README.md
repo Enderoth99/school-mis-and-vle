@@ -12,7 +12,7 @@ Try the [hosted demo](https://enderoth-learning-hub.web.app/wist-mis-testing/log
 | Parent | `301273` | `WistFamily2026!` |
 | Technician | `sam.turner` | `WistTest2026!` |
 
-Demo accounts and records are fictional. The Learning Hub deployment shares incidents, rewards and tutor/Head of Year assignments through Firebase Authentication and Firestore. Other hosted demo records remain browser-local. The default portable demo stays fully local; use `npm run build:shared-demo` for the configured shared-incident deployment.
+Demo accounts and records are fictional. The Learning Hub now uses the full shared backend for attendance, assessments, Classroom, incidents, accounts and school records across computers. The default portable demo remains browser-local. The earlier Firestore-only incident deployment is now read-only.
 
 ## Run from a fresh clone
 
@@ -50,4 +50,4 @@ Shared incident deployment: see [the deployment guide](docs/shared-incidents.md)
 
 ## Full shared backend preparation
 
-The server build now supports centrally stored attendance, assessments, Classroom and teacher workspaces, with persistent login sessions. Its deployment is pending a linked Google Cloud billing account; this does not change the live hosted demo yet. See [full shared deployment and migration](docs/full-shared-deployment.md).
+The shared server is deployed on the Learning Hub with centrally stored attendance, assessments, Classroom and teacher workspaces, plus persistent login sessions. Static client bundles run on Firebase Hosting; authenticated API requests run on Cloud Run with private storage. See [full shared deployment and migration](docs/full-shared-deployment.md).

@@ -6,6 +6,7 @@ import { execFileSync } from 'node:child_process';
 import { documentValue } from '../demo/firestore-values.mjs';
 import { memoryStore, expandRecord } from '../demo/shared-incident-model.mjs';
 import { incidentCSV } from '../dist/incident-model.mjs';
+import { CloudJsonStorage } from '../cloud-storage.mjs';
 
 const target = process.argv[2];
 if (!target) throw Error('Supply a directory.json deployment seed path.');
@@ -30,10 +31,16 @@ do {
   for (const document of result.documents || []) rows.push(expandRecord(documentValue(document), store));
   pageToken = result.nextPageToken;
 } while (pageToken);
-const filename = path.resolve(target), directory = JSON.parse(await fs.readFile(filename));
+const bucket = /^gs:\/\/([a-z0-9][a-z0-9._-]+)$/.exec(target)?.[1];
+const backend = bucket ? new CloudJsonStorage(bucket, { tokenProvider: () => token }) : null;
+const snapshot = backend ? await backend.load('directory.json') : null;
+if (backend && !snapshot) throw Error('The private shared Directory has not been initialized.');
+const filename = backend ? target + '/directory.json' : path.resolve(target);
+const directory = backend ? structuredClone(snapshot.state) : JSON.parse(await fs.readFile(filename));
 const records = new Map((directory.incidentLedger?.records || []).map(row => [row.id, row]));
 for (const row of rows) if (!records.has(row.id)) records.set(row.id, row);
 directory.incidentLedger = { version: 1, records: [...records.values()], spreadsheetCSV: incidentCSV([...records.values()]) };
-directory.incidentRoles ||= roles;
-await fs.writeFile(filename, JSON.stringify(directory));
+if (process.argv.includes('--refresh-roles') || !directory.incidentRoles) directory.incidentRoles = roles;
+if (backend) await backend.save('directory.json', directory, snapshot);
+else await fs.writeFile(filename, JSON.stringify(directory));
 console.log('Preserved ' + rows.length + ' existing shared incidents and recipient assignments in ' + filename);

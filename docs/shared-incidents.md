@@ -1,3 +1,7 @@
+# Earlier incident-only deployment (archived)
+
+The live Learning Hub now uses the [full shared MIS backend](full-shared-deployment.md). This document describes the previous Firestore browser bridge, which is read-only after cutover.
+
 # Shared incident deployment
 
 The Learning Hub deployment uses Firebase Authentication and the existing Firestore database for incidents, rewards and tutor/Head of Year assignments. The rest of the hosted demo remains browser-local. The Node server deployment continues to use its existing server persistence.
