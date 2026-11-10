@@ -62,5 +62,5 @@ for (const name of await fs.readdir(path.join(target, 'dist'))) {
   if (name === 'login.html') source = source.replace('</section></main>', '<p class="login-footnote"><a href="/wist-mis-browser-backup/login.html">Export earlier records saved only in this browser ↗</a></p></section></main>');
   await fs.writeFile(file, source);
 }
-await stampIntegratedRelease(path.join(target, 'dist'));
+await stampIntegratedRelease(path.join(target, 'dist'), {versionModules:false});
 console.log('Built server-backed MIS at ' + target + ' with ' + Object.keys(seed['grades.json'].assessments).length + ' assessment fixtures. No browser API emulator included.');

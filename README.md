@@ -12,7 +12,7 @@ Try the [hosted demo](https://enderoth-learning-hub.web.app/wist-mis-testing/log
 | Parent | `301273` | `WistFamily2026!` |
 | Technician | `sam.turner` | `WistTest2026!` |
 
-Demo accounts and records are fictional. The Learning Hub now uses the full shared backend for attendance, assessments, Classroom, incidents, accounts and school records across computers. The default portable demo remains browser-local. The earlier Firestore-only incident deployment is now read-only.
+Demo accounts and records are fictional. The Learning Hub now uses the full shared backend for attendance, assessments, Classroom, incidents, accounts and school records across computers. Administrators can publish a completed shared timetable draft to teacher and student schedules; draft edits stay separate until publication. See [shared timetable planning](docs/shared-timetable-planning.md). The default portable demo remains browser-local. The earlier Firestore-only incident deployment is now read-only.
 
 ## Run from a fresh clone
 

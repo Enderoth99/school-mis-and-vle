@@ -61,11 +61,21 @@ for(const g of secondaryGroups.filter(g=>g.year>=12)){
  }));
 }
 export const teachingClasses=classes;
-export const classesForTeacher=id=>teachingClasses.filter(c=>c.teacherId===id||c.teacherIds?.includes(id));
+export const classesForTeacher=id=>teachingClasses.filter(c=>!c.archivedTimetable&&(c.teacherId===id||c.teacherIds?.includes(id)));
 export const studentsForTeacher=id=>{const memberIds=new Set(classesForTeacher(id).flatMap(c=>c.studentIds));return students.filter(s=>memberIds.has(s.id));};
-export const classesForStudent=id=>teachingClasses.filter(c=>c.studentIds.includes(id));
+export const classesForStudent=id=>teachingClasses.filter(c=>!c.archivedTimetable&&c.studentIds.includes(id));
 let activeSnapshot=null;
 export const activeTimetableInfo=()=>activeSnapshot;
+export function installPublishedTimetable(snapshot){
+ const compiled=structuredClone(snapshot);
+ teachingClasses.splice(0,teachingClasses.length,...compiled.classes);
+ teachers.splice(0,teachers.length,...compiled.teachers);
+ schoolPeriods.splice(0,schoolPeriods.length,...compiled.periods);
+ for(const label of compiled.groups||[]){const group=groups.find(g=>g.id===label.id);if(group)Object.assign(group,{name:label.name,form:label.form||group.form});}
+ for(const student of students){const group=groups.find(g=>g.id===student.cohort);if(group)Object.assign(student,{groupName:group.name,form:group.form});}
+ for(const tutor of formTutors){const c=compiled.classes.find(c=>!c.archivedTimetable&&c.cohort===tutor.groupId&&c.kind==='registration');if(c){tutor.teacherId=c.teacherId;tutor.groupName=groups.find(g=>g.id===tutor.groupId)?.name||tutor.groupName;}}
+ activeSnapshot=compiled;return compiled;
+}
 export function installTeachingTimetable(project){
  const compiled=compileTeachingTimetable(project,teachingClasses,teachers,formTutors);
  const labels=new Map(project.groups.map(g=>[g.id,g]));

@@ -23,3 +23,12 @@ The browser serializes saves and queues the newest edit while a request is in fl
 ## Verification
 
 Tests cover independent server/store instances, restart persistence, stale revisions, duplicate requests, failed storage writes, role restrictions, rapid autosaves, uncertain-response retries, metadata races and UTF-8 chunk boundaries. The live Learning Hub check saved through one staff account, read through another, rejected a stale write, denied student/unsigned access, retried without duplicating a revision, and restored the starting plan. A browser save then confirmed the shared revision and editor. The full suite passes 412 tests.
+
+
+Administrators can now choose **Publish timetable** above the planning stages. The preview checks the saved shared revision, complete placements, clashes, compulsory student coverage, whole-school inclusion and active teacher accounts. Confirming publishes an immutable schedule snapshot and records the publisher, time and source draft revision. Staff cannot publish through either the UI or API.
+
+Teacher and student schedules load the publication when they next load the MIS. The server also uses it for attendance lesson lists, Directory schedules, Classroom and cover availability. Further saves remain drafts. A changed draft, publication or managed school catalog invalidates an earlier preview. Uncertain publication retries use the same operation identifier.
+
+Publication writes only the shared planning object. Existing class IDs remain stable; removed teaching allocations retain archived metadata for historical records. Attendance, assessments and Classroom files are not rewritten. Published memberships replace pre-publication enrollment overrides; subsequent deliberate admin enrollment edits still apply. Existing IDs cannot be repurposed for a different subject/year. Tutor group changes must first be saved in Administration. Publication requires a whole-school draft; partial phase publication and a future effective date are not yet supported.
+
+The native server build leaves relative module imports unversioned so Node uses one mutable teaching catalog. Browser bundles retain content-hash release URLs for CDN caching.

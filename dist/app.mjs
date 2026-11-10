@@ -1,3 +1,5 @@
+import {installPublishedTimetable} from './teaching-data.mjs';
+import {capturePublishedCatalog} from './managed-catalog.mjs';
 import {createIncidentsUI} from './incidents-ui.mjs';
 import {createOptionChoicesUI} from './option-choices-ui.mjs';
 import {createSupportUI} from './support-ui.mjs';
@@ -45,7 +47,7 @@ const homeTools=createHomeTools({esc,button,empty,classes:()=>classes,teacher:()
 const reportsUI=createReportsUI({esc,button,options,empty,student:studentById,teacher:()=>currentTeacher,route:readRoute,render,navigate,setDirty:value=>{dirty=value;if(value&&$('#save-status'))$('#save-status').textContent='Unsaved report changes';},isDirty:()=>dirty,canRender:()=>!dirty&&!dialogDirty&&!$('#dialog').open,dialogDirty:value=>{dialogDirty=value;},openDialog,closeDialog,error:showError,toast,download});
 const reportLibraryUI=createReportLibraryUI({state:()=>state,teacher:()=>currentTeacher,classes:()=>classes,students:()=>students,testDate:()=>activeTimetableInfo()?.testDate,openDialog,download,savePreferences:updates=>mutate(s=>{if(updates.favorites)s.favorites=updates.favorites;if(updates.history)s.reportHistory=updates.history;})});
 const attendanceOverviewUI=createAttendanceOverviewUI({esc,button,options,route:readRoute,render,navigate,replaceHash:hash=>{history.replaceState(null,'',hash);previousHash=location.hash;},canRender:()=>!dirty&&!dialogDirty&&!$('#dialog').open,download});
-const timetableUI=createTimetableUI({shared:()=>sharedWorkspace,esc,button,options,route:readRoute,render,navigate:hash=>{location.hash=hash.slice(1);},openDialog,closeDialog,toast,download});
+const timetableUI=createTimetableUI({actor:()=>currentTeacher,shared:()=>sharedWorkspace,esc,button,options,route:readRoute,render,navigate:hash=>{location.hash=hash.slice(1);},openDialog,closeDialog,toast,download});
 const optionChoicesUI=createOptionChoicesUI({e:esc,actor:()=>currentTeacher,toast,importPlanning:p=>timetableUI.importPlanning(p)});
 const directoryUI=createDirectoryUI({esc,button,options,empty,route:readRoute,render,navigate,replaceHash:hash=>{history.replaceState(null,'',hash);previousHash=location.hash;},canRender:()=>!dirty&&!dialogDirty&&!$('#dialog').open,openDialog,closeDialog,error:showError,toast,download});
 try {schoolState=load(localStorage);state=schoolState;}catch(e){schoolState=seed();state=schoolState;storageBroken=true;storageWarning(e.message);}
@@ -187,7 +189,7 @@ function applyTeacherScope(){if(currentTeacher.role==='technician'){document.que
  $('#teacher-avatar').textContent=initials(currentTeacher.name);$('#teacher-avatar').title=currentTeacher.username;
 }
 async function boot(){
- try{const response=await fetch('/api/session',{credentials:'same-origin',cache:'no-store'});if(response.status===401){location.replace('/login.html');return;}if(!response.ok)throw new Error('Could not load the test session.');const session=await response.json();currentTeacher=session.teacher;sharedWorkspace=Boolean(session.features?.sharedWorkspace);if(currentTeacher.role==='technician'){applyTeacherScope();render();return;}if(!['student','parent'].includes(currentTeacher.role)){await syncManagedCatalog();if(sharedWorkspace)await syncWorkspace();}if(['student','parent'].includes(currentTeacher.role)){applyTeacherScope();render();return;}if(currentTeacher.role!=='report-reviewer')await syncSharedAttendance();applyTeacherScope();if(currentTeacher.role!=='report-reviewer')await gradesUI.migrate(schoolState,currentTeacher);await reportsUI.migrate(state);await incidentsUI.migrate(schoolState.incidents);render();}
+ try{const response=await fetch('/api/session',{credentials:'same-origin',cache:'no-store'});if(response.status===401){location.replace('/login.html');return;}if(!response.ok)throw new Error('Could not load the test session.');const session=await response.json();currentTeacher=session.teacher;sharedWorkspace=Boolean(session.features?.sharedWorkspace);if(currentTeacher.role==='technician'){applyTeacherScope();render();return;}if(sharedWorkspace&&currentTeacher.role!=='parent')await syncPublishedTimetable();if(!['student','parent'].includes(currentTeacher.role)){await syncManagedCatalog();if(sharedWorkspace)await syncWorkspace();}if(['student','parent'].includes(currentTeacher.role)){applyTeacherScope();render();return;}if(currentTeacher.role!=='report-reviewer')await syncSharedAttendance();applyTeacherScope();if(currentTeacher.role!=='report-reviewer')await gradesUI.migrate(schoolState,currentTeacher);await reportsUI.migrate(state);await incidentsUI.migrate(schoolState.incidents);render();}
  catch(error){$('#main').innerHTML='<div class="error">'+esc(error.message)+' Start the local server with npm start.</div>';}
 }
 async function signOut(){
@@ -235,3 +237,5 @@ window.addEventListener('focus',()=>{if(currentTeacher&&readRoute().path==='/hom
 
 async function syncManagedCatalog(){const r=await fetch('/api/people-catalog',{credentials:'same-origin',cache:'no-store'});if(!r.ok)throw Error('Could not load managed school records.');applyManagedCatalog(await r.json());}
 
+
+async function syncPublishedTimetable(){const r=await fetch('/api/classroom/timetable',{credentials:'same-origin',cache:'no-store'});if(!r.ok)throw Error('Could not load the published school timetable.');const {snapshot}=await r.json();if(snapshot){installPublishedTimetable(snapshot);capturePublishedCatalog(snapshot);}}
