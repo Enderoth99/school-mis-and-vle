@@ -32,6 +32,12 @@ export function createIncidentsUI({ e, actor, toast, render }) {
           event.preventDefault();
           location.hash = '/incidents?' + new URLSearchParams(new FormData(event.currentTarget));
         };
+        if (data.shared) {
+          const note = document.createElement('p');
+          note.className = 'vle-note';
+          note.innerHTML = 'Shared across computers. <button class="btn small" data-incident-migrate>Import my earlier browser records</button>';
+          root.prepend(note);
+        }
         bindDetails(root, data.records);
       } catch (error) {
         const root = document.querySelector('#incidents-content');
@@ -174,12 +180,18 @@ export function createIncidentsUI({ e, actor, toast, render }) {
   }
 
   document.addEventListener('click', async event => {
-    const button = event.target.closest('[data-incident-new],[data-incident-export],[data-incident-recipients]');
+    const button = event.target.closest('[data-incident-new],[data-incident-export],[data-incident-recipients],[data-incident-migrate]');
     if (!button) return;
     if (button.hasAttribute('data-incident-new')) { void open(); return; }
     if (button.hasAttribute('data-incident-recipients')) { void recipients(); return; }
     button.disabled = true;
     try {
+      if (button.hasAttribute('data-incident-migrate')) {
+        const result = await api('migrate-browser', {});
+        toast(result.imported + ' of your earlier browser records are now shared.');
+        render();
+        return;
+      }
       const text = await api('spreadsheet');
       const url = URL.createObjectURL(new Blob([text], { type: 'text/csv;charset=utf-8' }));
       const anchor = document.createElement('a'); anchor.href = url; anchor.download = 'incidents-and-rewards.csv'; anchor.click();

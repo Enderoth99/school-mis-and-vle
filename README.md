@@ -12,7 +12,7 @@ Try the [hosted demo](https://enderoth-learning-hub.web.app/wist-mis-testing/log
 | Parent | `301273` | `WistFamily2026!` |
 | Technician | `sam.turner` | `WistTest2026!` |
 
-Demo accounts and records are fictional. Use the same browser when switching roles to test shared workflows in the hosted demo: changes are stored locally in that browser.
+Demo accounts and records are fictional. The Learning Hub deployment shares incidents, rewards and tutor/Head of Year assignments through Firebase Authentication and Firestore. Other hosted demo records remain browser-local. The default portable demo stays fully local; use `npm run build:shared-demo` for the configured shared-incident deployment.
 
 ## Run from a fresh clone
 
@@ -45,3 +45,5 @@ Staff choose Primary/Secondary, year, tutor group and student, then C1–C3 or R
 - [Administration](docs/admin-research.md), [daily cover](docs/daily-cover-release.md) and [technical support](docs/technical-support-release.md)
 
 The demo uses known test passwords. It is intended for evaluation with fictional records. Production use with real records requires a separate deployment, authentication and data protection review.
+
+Shared incident deployment: see [the deployment guide](docs/shared-incidents.md). Teacher Overview and the sidebar include an Assessment shortcut to the existing per-class mark entry and tracking sheets.
