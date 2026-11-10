@@ -47,3 +47,7 @@ Staff choose Primary/Secondary, year, tutor group and student, then C1–C3 or R
 The demo uses known test passwords. It is intended for evaluation with fictional records. Production use with real records requires a separate deployment, authentication and data protection review.
 
 Shared incident deployment: see [the deployment guide](docs/shared-incidents.md). Teacher Overview and the sidebar include an Assessment shortcut to the existing per-class mark entry and tracking sheets.
+
+## Full shared backend preparation
+
+The server build now supports centrally stored attendance, assessments, Classroom and teacher workspaces, with persistent login sessions. Its deployment is pending a linked Google Cloud billing account; this does not change the live hosted demo yet. See [full shared deployment and migration](docs/full-shared-deployment.md).

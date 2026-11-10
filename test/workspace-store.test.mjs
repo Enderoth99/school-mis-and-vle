@@ -1,0 +1,40 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { DirectoryStore } from '../directory-store.mjs';
+import { WorkspaceStore } from '../workspace-store.mjs';
+import { teacherByUsername } from '../dist/teaching-data.mjs';
+import { studentActor } from '../dist/student-accounts.mjs';
+const noah = teacherByUsername('noah.morgan'), zara = teacherByUsername('zara.campbell');
+test('teacher calendar, lesson plans and preferences persist across workspace instances without exposing another teacher’s data', async () => {
+  const directory = new DirectoryStore(null), first = new WorkspaceStore(directory);
+  const original = first.read(noah);
+  original.state.events.push({ id: 'calendar-shared-1', title: 'Private planning meeting', date: '2026-11-10', type: 'Personal' });
+  original.state.favorites = ['class-attendance-daily'];
+  const saved = await first.save(noah, { state: original.state, expectedRevision: 0 });
+  const second = new WorkspaceStore(directory);
+  assert(second.read(noah).state.events.some(e => e.id === 'calendar-shared-1'));
+  assert(!second.read(zara).state.events.some(e => e.id === 'calendar-shared-1'));
+  assert.deepEqual(second.read(noah).state.favorites, ['class-attendance-daily']);
+  await assert.rejects(second.save(noah, { state: original.state, expectedRevision: 0 }), e => e.status === 409);
+  assert.equal(second.read(noah).revision, saved.revision);
+});
+test('workspace import is idempotent and cannot replace a later shared save', async () => {
+  const store = new WorkspaceStore(new DirectoryStore(null));
+  const original = store.read(noah);
+  await store.save(noah, { state: original.state, expectedRevision: 0 }, true);
+  const updated = store.read(noah); updated.state.favorites = ['new-favorite'];
+  await store.save(noah, { state: updated.state, expectedRevision: updated.revision });
+  await store.save(noah, { state: original.state, expectedRevision: 0 }, true);
+  assert.deepEqual(store.read(noah).state.favorites, ['new-favorite']);
+});
+test('workspace rejects student access, cross-teacher events and unauthorized class changes', async () => {
+  const store = new WorkspaceStore(new DirectoryStore(null));
+  assert.throws(() => store.read(studentActor('s-9a-1')), e => e.status === 403);
+  let data = store.read(noah);
+  data.state.events.push({ id: 'wrong-owner', title: 'Other teacher', teacherId: zara.id, date: '2026-11-10' });
+  await assert.rejects(store.save(noah, { state: data.state, expectedRevision: 0 }), e => e.status === 403);
+  data = store.read(noah);
+  data.state.lessons.push({ id: 'wrong-class', classId: 'not-owned', title: 'Other class', date: '2026-11-10', objective: 'Do work', taught: false });
+  await assert.rejects(store.save(noah, { state: data.state, expectedRevision: 0 }), e => e.status === 403);
+  assert.equal(store.read(noah).revision, 0);
+});

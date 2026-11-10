@@ -31,7 +31,7 @@ export function createReportLibraryUI(ui){
    $('#library-run-status').textContent='Report ready · '+value.rows.length+' records';$('#library-csv').disabled=$('#library-print').disabled=false;
   }catch(e){if(token===serial&&$('#library-run-error')){$('#library-run-error').textContent=e.message;$('#library-run-status').textContent='Review the filters and try again.';}}finally{running=false;}
  }
- function record(format){ui.savePreferences({history:[{title:result.title,className:result.scope,detail:result.from+' to '+result.to+' · '+result.rows.length+' rows · '+format,at:new Date().toISOString()},...ui.state().reportHistory].slice(0,50)});const list=$('.library-history');if(list)list.innerHTML='<summary>Recent exports ('+ui.state().reportHistory.length+')</summary>'+ui.state().reportHistory.slice(0,10).map(r=>'<p><strong>'+esc(r.title)+'</strong><br><small>'+esc(r.detail)+' · '+esc(r.at)+'</small></p>').join('');}
+ async function record(format){await ui.savePreferences({history:[{title:result.title,className:result.scope,detail:result.from+' to '+result.to+' · '+result.rows.length+' rows · '+format,at:new Date().toISOString()},...ui.state().reportHistory].slice(0,50)});const list=$('.library-history');if(list)list.innerHTML='<summary>Recent exports ('+ui.state().reportHistory.length+')</summary>'+ui.state().reportHistory.slice(0,10).map(r=>'<p><strong>'+esc(r.title)+'</strong><br><small>'+esc(r.detail)+' · '+esc(r.at)+'</small></p>').join('');}
  function exportCsv(){if(!result)return;const safe=v=>typeof v==='string'&&/^[=+\-@]/.test(v)?"'"+v:v;ui.download(selected.id+'-'+result.from+'-to-'+result.to+'.csv',csv([result.columns,...result.rows.map(r=>r.map(safe))]));record('CSV');}
  function print(){
   if(!result)return;const target=window.open('','_blank');if(!target){$('#library-run-error').textContent='Allow this site to open the print preview, then try again.';return;}
@@ -41,7 +41,7 @@ export function createReportLibraryUI(ui){
  }
  function action(action,t){
   if(!action.startsWith('library-'))return false;
-  if(action==='library-favorite'){const ids=ui.state().favorites,id=t.dataset.id;ui.savePreferences({favorites:ids.includes(id)?ids.filter(v=>v!==id):[...ids,id]});paint();}
+  if(action==='library-favorite'){const ids=ui.state().favorites,id=t.dataset.id;Promise.resolve(ui.savePreferences({favorites:ids.includes(id)?ids.filter(v=>v!==id):[...ids,id]})).then(paint);}
   if(action==='library-open')configure(t.dataset.id);
   if(action==='library-run')run();if(action==='library-csv')exportCsv();if(action==='library-print')print();
   if(action==='library-expand'||action==='library-collapse'){open=new Set(action==='library-expand'?REPORT_CATEGORIES:[]);paint();}
