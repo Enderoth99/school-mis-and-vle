@@ -2,7 +2,7 @@
 
 Status: deployed and verified on 10 November 2026 at https://enderoth-learning-hub.web.app/wist-mis-testing/login.html. Cloud Run service `school-mis-vle` uses private shared storage. The Hub card is “School MIS and VLE — shared testing”.
 
-The existing Node API provides the server-side permissions for attendance, assessments, Classroom assignments, quizzes, student hand-ins, marking, files, feedback, explicit grade transfer to the MIS, reports, messages, Directory, accounts, technical support, cover and option choices. Teacher calendar events, lesson plans and report-library preferences also have a shared workspace API. Published timetable allocations come from the integrated fixture; the separate timetable planning editor still keeps its working draft in the browser.
+The existing Node API provides the server-side permissions for attendance, assessments, Classroom assignments, quizzes, student hand-ins, marking, files, feedback, explicit grade transfer to the MIS, reports, messages, Directory, accounts, technical support, cover and option choices. Teacher calendar events, lesson plans and report-library preferences also have a shared workspace API. Published timetable allocations come from the integrated fixture. Timetable planning drafts now use a separate private shared store with autosave, revision checks and explicit import of earlier browser drafts; see [shared timetable planning](shared-timetable-planning.md).
 
 ## Storage and sessions
 

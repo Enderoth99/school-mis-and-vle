@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
-export const LOGIN_RELEASE='20261110-full-shared-server-v1';
+export const LOGIN_RELEASE='20261110-shared-planning-v1';
 export function versionModuleReferences(source,release=LOGIN_RELEASE){
  return source.replace(/(['"])(\.\.?\/[^'"\s?]+\.mjs)\1/g,(_,quote,file)=>quote+file+'?v='+release+quote);
 }

@@ -51,3 +51,5 @@ Shared incident deployment: see [the deployment guide](docs/shared-incidents.md)
 ## Full shared backend preparation
 
 The shared server is deployed on the Learning Hub with centrally stored attendance, assessments, Classroom and teacher workspaces, plus persistent login sessions. Static client bundles run on Firebase Hosting; authenticated API requests run on Cloud Run with private storage. See [full shared deployment and migration](docs/full-shared-deployment.md).
+
+Timetable planning drafts now use shared autosave with revision checks, last-editor information and explicit import/recovery of earlier browser drafts. See [shared timetable planning](docs/shared-timetable-planning.md).
